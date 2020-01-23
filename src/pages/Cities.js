@@ -33,8 +33,8 @@ export default class Cities extends Component {
         let filteredCities = this.state.cities;
         filteredCities = filteredCities.filter((city) => {
             let cityName = city.cityName.toLowerCase();
-            return cityName.indexOf(
-                cityFilter.toLowerCase()) !== -1
+            return cityName.startsWith(
+                cityFilter.toLowerCase())
         })
         this.setState({
             filteredCities
