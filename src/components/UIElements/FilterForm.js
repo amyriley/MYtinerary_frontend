@@ -19,7 +19,7 @@ class filterForm extends Component {
     render() {
         return (
             <div>
-                <label htmlFor="filter">Filter by city: </label>
+                <label htmlFor="filter">Filter our current cities: </label>
                 <input type="text" id="filter" 
                 value={this.state.cityFilter} 
                 onChange={this.handleChange}/>

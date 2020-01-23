@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
-import MainHeader from '../components/Navigation/MainHeader';
 import FilterForm from '../components/UIElements/FilterForm';
 import CityList from '../components/CityList';
+import MainFooter from '../components/Navigation/MainFooter';
 
 export default class Cities extends Component {
     constructor(props) {
@@ -18,9 +18,9 @@ export default class Cities extends Component {
     render() {
         return (
             <Fragment>
-                <MainHeader />
                 <FilterForm onChange={this.filterCities} />
                 <CityList filteredCities={this.state.filteredCities} cities={this.state.cities} />
+                <MainFooter />
             </Fragment>
         )
     }

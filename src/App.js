@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import MainHeader from '../src/components/Navigation/MainHeader';
 import Cities from '../src/pages/Cities';
 import Landing from '../src/pages/Landing';
 import SignUp from '../src/pages/SignUp';
@@ -12,6 +13,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          <MainHeader />
           <Switch>
             <Route path="/" component={Landing} exact>
             </Route>

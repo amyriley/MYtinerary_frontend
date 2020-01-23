@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import logo from '../../src/images/MYtineraryLogo.png';
-import MainFooter from '../components/Navigation/MainFooter';
 import './Landing.css';
 
 export default function Landing() {
@@ -16,7 +15,6 @@ export default function Landing() {
                 <p>Find your perfect trip, designed by people who know and love their cities.</p>
             </div>
             <Link to="/cities" >Start browsing</Link>
-            <MainFooter />
         </div>
     )
 }
