@@ -1,10 +1,15 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 
+import { fetchCities } from '../store/actions/cityActions';
 import FilterForm from '../components/UIElements/FilterForm';
 import CityList from '../components/CityList';
 import MainFooter from '../components/Navigation/MainFooter';
+import fetchCitiesAction from 'fetchCities';
+import { getCitiesError, getCities, getProductsPending } from '../store/reducers/citiesReducer';
 
-export default class Cities extends Component {
+class Cities extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -41,14 +46,12 @@ export default class Cities extends Component {
         })
         console.log("filtered " + this.state.filteredCities)
     }
-    
-    fetchCities = () => {
-        this.setState({...this.state, isFetching: true});
-        fetch('http://localhost:5000/cities/all')
-          .then(results => results.json())
-          .then(result => this.setState({cities: result, isFetching: false}))
-          .then(r => console.log(this.state))
-          .catch(e => console.log(e))
-          this.setState({...this.state, isFetching: false});
-      }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchCities: () => dispatch(fetchCities)
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Cities);
