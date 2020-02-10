@@ -1,57 +1,52 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from 'redux';
 
-import { fetchCities } from '../store/actions/cityActions';
-import FilterForm from '../components/UIElements/FilterForm';
-import CityList from '../components/CityList';
-import MainFooter from '../components/Navigation/MainFooter';
-import fetchCitiesAction from 'fetchCities';
-import { getCitiesError, getCities, getProductsPending } from '../store/reducers/citiesReducer';
+import FilterForm from "../components/UIElements/FilterForm";
+import { fetchCities } from "../store/actions/cityActions";
+import CityList from "../components/CityList";
+import MainFooter from "../components/Navigation/MainFooter";
 
 class Cities extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            cities: [],
-            filteredCities: [],
-            isFetching: false
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      filteredCities: []
+    };
+  }
 
-    }
+  componentDidMount() {
+    this.props.dispatch(fetchCities());
+  }
 
-    render() {
-        return (
-            <Fragment>
-                <FilterForm onChange={this.filterCities} />
-                <CityList filteredCities={this.state.filteredCities} cities={this.state.cities} />
-                <MainFooter />
-            </Fragment>
-        )
-    }
+  filterCities = cityFilter => {
+    let filteredCities = this.props.cities;
+    filteredCities = filteredCities.filter(city => {
+      let cityName = city.cityName.toLowerCase();
+      return cityName.startsWith(cityFilter.toLowerCase());
+    });
+    this.setState({
+      filteredCities
+    });
+    console.log("filtered " + this.state.filteredCities);
+  };
 
-    componentDidMount() {
-        this.fetchCities();
-    }
+  render() {
+    const { cities } = this.props;
 
-        filterCities = (cityFilter) => {
-        let filteredCities = this.state.cities;
-        filteredCities = filteredCities.filter((city) => {
-            let cityName = city.cityName.toLowerCase();
-            return cityName.startsWith(
-                cityFilter.toLowerCase())
-        })
-        this.setState({
-            filteredCities
-        })
-        console.log("filtered " + this.state.filteredCities)
-    }
+    return (
+      <Fragment>
+        <FilterForm onChange={this.filterCities} />
+        <CityList filteredCities={this.state.filteredCities} cities={cities} />
+        <MainFooter />
+      </Fragment>
+    );
+  }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchCities: () => dispatch(fetchCities)
-    }
-}
+const mapStateToProps = state => ({
+  cities: state.cities.items,
+  loading: state.cities.loading,
+  error: state.cities.error
+});
 
-export default connect(null, mapDispatchToProps)(Cities);
+export default connect(mapStateToProps)(Cities);

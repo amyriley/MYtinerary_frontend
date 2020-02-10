@@ -1,28 +1,37 @@
-export const FETCH_CITIES_PENDING = 'FETCH_CITIES_PENDING';
-export const FETCH_CITIES_SUCCESS = 'FETCH_CITIES_SUCCESS';
-export const FETCH_CITIES_ERROR = 'FETCH_CITIES_ERROR';
-
-function fetchProductsPending() {
-  return {
-    type: FETCH_CITIES_PENDING
-  }
+export function fetchCities() {
+  return dispatch => {
+    dispatch(fetchCitiesBegin());
+    fetch("http://localhost:5000/cities/all")
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          throw res.error;
+        }
+        dispatch(fetchCitiesSuccess(res));
+        return res;
+      })
+      .catch(error => {
+        dispatch(fetchCitiesFailure(error));
+      });
+  };
 }
 
-function fetchProductsSuccess() {
+export const fetchCitiesBegin = () => {
   return {
-    type: FETCH_CITIES_SUCCESS
-  }
-}
+    type: FETCH_CITIES_BEGIN
+  };
+};
 
-function fetchProductsError() {
-  return {
-    type: FETCH_CITIES_ERROR
-  }
-}
+export const fetchCitiesSuccess = cities => ({
+  type: FETCH_CITIES_SUCCESS,
+  payload: { cities }
+});
 
-// const createCity = (city) => {
-//     return (dispatch, getState) => {
-//         // make async call to database
-//         dispatch({ type: 'CREATE_CITY', cities })
-//     }
-// }
+export const fetchCitiesFailure = error => ({
+  type: FETCH_CITIES_FAILURE,
+  payload: { error }
+});
+
+export const FETCH_CITIES_BEGIN = "FETCH_CITIES_BEGIN";
+export const FETCH_CITIES_SUCCESS = "FETCH_CITIES_SUCCESS";
+export const FETCH_CITIES_FAILURE = "FETCH_CITIES_FAILURE";

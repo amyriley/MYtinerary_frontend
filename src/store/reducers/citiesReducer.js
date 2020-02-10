@@ -1,38 +1,39 @@
-import { FETCH_CITIES_PENDING, FETCH_CITIES_SUCCESS, FETCH_CITIES_ERROR } from '../actions/cityActions';
+import {
+  FETCH_CITIES_BEGIN,
+  FETCH_CITIES_SUCCESS,
+  FETCH_CITIES_FAILURE
+} from "../actions/cityActions";
 
-const initState = {
-    pending: false,
-    cities: [],
-    error: null
+const initialState = {
+  items: [],
+  loading: false,
+  error: null
+};
+
+export function citiesReducer(state = initialState, action) {
+  switch (action.type) {
+    case FETCH_CITIES_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+
+    case FETCH_CITIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        items: action.payload.cities
+      };
+
+    case FETCH_CITIES_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
+
+    default:
+      return state;
+  }
 }
-
-const cityReducer = (state = initState, action) => {
-    switch(action.type) {
-        case FETCH_CITIES_PENDING:
-            return {
-                ...state,
-                pending: true
-            }
-
-        case FETCH_CITIES_SUCCESS:
-            return {
-                ...state,
-                pending: false,
-                cities: action.payload
-            }
-
-        case FETCH_CITIES_ERROR:
-            return {
-                ...state,
-                pending: false,
-                cities: action.error
-            }
-
-        default: 
-            return state;
-    }
-}
-
-export const getCities = state => state.cities;
-export const getCitiesPending = state => state.pending;
-export const getCitiesError = state => state.error;
