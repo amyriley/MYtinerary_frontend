@@ -27,7 +27,6 @@ class Cities extends Component {
     this.setState({
       filteredCities
     });
-    console.log("filtered " + this.state.filteredCities);
   };
 
   render() {
