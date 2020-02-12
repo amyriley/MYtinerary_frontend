@@ -10,7 +10,12 @@ class CityList extends Component {
       return (
         <div className="city-list">
           {cities.map(city => (
-            <CityItem key={city._id} cityName={city.cityName} />
+            <CityItem
+              key={city._id}
+              cityName={city.cityName}
+              country={city.country}
+              cityId={city._id}
+            />
           ))}
         </div>
       );
@@ -19,7 +24,12 @@ class CityList extends Component {
     return (
       <div className="city-list">
         {filteredCities.map(city => (
-          <CityItem key={city._id} cityName={city.cityName} />
+          <CityItem
+            key={city._id}
+            cityName={city.cityName}
+            country={city.country}
+            cityId={city._id}
+          />
         ))}
       </div>
     );
