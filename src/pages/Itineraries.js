@@ -13,7 +13,6 @@ class Itineraries extends Component {
 
   render() {
     const { itineraries } = this.props;
-    console.log(itineraries);
 
     return (
       <React.Fragment>
