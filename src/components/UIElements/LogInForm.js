@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { registerUser } from "../../store/actions/userActions";
 import { connect } from "react-redux";
+import { loginUser } from "../../store/actions/userActions";
 
-class SignUpForm extends Component {
+class LogInForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      profilePicture: "",
       errors: {}
     };
 
@@ -23,18 +22,14 @@ class SignUpForm extends Component {
     });
   };
 
-  handleSubmit = e => {
+  login = e => {
     e.preventDefault();
     const errors = this.validate(this.state.email, this.state.password);
     this.setState({ errors });
-
     const user = this.state;
-
-    console.log(user);
     if (Object.entries(errors).length === 0) {
-      this.props.registerUser(user);
+      this.props.loginUser(user);
     }
-    console.log("user after dispatch " + user);
   };
 
   validate = (email, password) => {
@@ -81,23 +76,18 @@ class SignUpForm extends Component {
               <span>{this.state.errors["password"]}</span>
             )}
           </div>
-          <TextField
-            id="standard-basic"
-            label="Profile picture"
-            value={this.state.profilePicture}
-            onChange={this.handleChange("profilePicture")}
-          >
-            Profile picture
-          </TextField>
         </form>
-        <Button onClick={this.handleSubmit}>Submit</Button>
+        <Button onClick={this.login}>Login</Button>
+        <a href="http://localhost:5000/api/users/auth/google">
+          Sign In with Google
+        </a>
       </div>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  registerUser: user => dispatch(registerUser(user))
+  loginUser: user => dispatch(loginUser(user))
 });
 
-export default connect(null, mapDispatchToProps)(SignUpForm);
+export default connect(null, mapDispatchToProps)(LogInForm);

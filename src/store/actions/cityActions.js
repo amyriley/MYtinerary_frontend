@@ -1,7 +1,7 @@
 export function fetchCities() {
   return dispatch => {
     dispatch(fetchCitiesBegin());
-    fetch("http://localhost:5000/cities/all")
+    fetch("http://localhost:5000/api/cities/all")
       .then(res => res.json())
       .then(res => {
         if (res.error) {

@@ -1,7 +1,7 @@
 export function fetchItineraries(cityId) {
   return dispatch => {
     dispatch(fetchItinerariesBegin());
-    fetch(`http://localhost:5000/cities/${cityId}`)
+    fetch(`http://localhost:5000/api/cities/${cityId}`)
       .then(res => res.json())
       .then(res => {
         if (res.error) {
