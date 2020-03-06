@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { loginUser } from "../../store/actions/userActions";
+import { withRouter } from "react-router-dom";
 
 class LogInForm extends Component {
   constructor(props) {
@@ -14,6 +15,13 @@ class LogInForm extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.props.user.isAuthenticated) {
+      console.log(this.props);
+      this.props.history.push("/");
+    }
   }
 
   handleChange = input => e => {
@@ -86,8 +94,15 @@ class LogInForm extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
+  user: state.user
+});
+
 const mapDispatchToProps = dispatch => ({
   loginUser: user => dispatch(loginUser(user))
 });
 
-export default connect(null, mapDispatchToProps)(LogInForm);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(LogInForm)
+);

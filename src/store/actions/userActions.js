@@ -1,3 +1,5 @@
+import jwt_decode from "jwt-decode";
+
 export function fetchUsers() {
   return dispatch => {
     dispatch(fetchUsersBegin());
@@ -50,6 +52,7 @@ export function registerUser(user) {
           console.log(res.error);
         }
         dispatch(registerUserSuccess(res));
+        console.log("response " + res);
         return res;
       })
       .catch(error => {
@@ -80,7 +83,6 @@ export const REGISTER_USER_FAILURE = "REGISTER_USER_FAILURE";
 
 export function loginUser(user) {
   return dispatch => {
-    console.log("loginUser triggered");
     dispatch(loginUserBegin());
     fetch("http://localhost:5000/api/users/login", {
       method: "POST",
@@ -89,6 +91,16 @@ export function loginUser(user) {
     })
       .then(res => res.json())
       .then(res => {
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            userId: res.userId,
+            token: res.token
+          })
+        );
+        const decodedToken = jwt_decode(res.token);
+        console.log(decodedToken);
+        dispatch(setCurrentUser(decodedToken));
         if (res.error) {
           console.log("loginUser error");
           console.log(res.error);
@@ -100,6 +112,7 @@ export function loginUser(user) {
       })
       .catch(error => {
         console.log("loginUser failure");
+        console.log(error);
         dispatch(loginUserFailure(error));
       });
   };
@@ -124,3 +137,10 @@ export const loginUserFailure = error => ({
 export const LOGIN_USER_BEGIN = "LOGIN_USER_BEGIN";
 export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_FAILURE = "LOGIN_USER_FAILURE";
+
+export const setCurrentUser = decodedToken => ({
+  type: SET_CURRENT_USER,
+  payload: { decodedToken }
+});
+
+export const SET_CURRENT_USER = "SET_CURRENT_USER";

@@ -4,11 +4,15 @@ import {
   FETCH_USERS_FAILURE,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
-  LOGIN_USER_FAILURE
+  LOGIN_USER_FAILURE,
+  SET_CURRENT_USER
 } from "../actions/userActions";
+
+const empty = require("is-empty");
 
 const initialState = {
   currentUser: {},
+  isAuthenticated: false,
   items: [],
   loading: false,
   error: null
@@ -47,7 +51,7 @@ export function userReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        items: action.payload.user
+        items: action.payload
       };
 
     case LOGIN_USER_FAILURE:
@@ -55,6 +59,13 @@ export function userReducer(state = initialState, action) {
         ...state,
         loading: false,
         error: action.payload.error
+      };
+
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        isAuthenticated: !empty(action.payload),
+        user: action.payload
       };
 
     default:
