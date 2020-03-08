@@ -140,14 +140,22 @@ export const LOGIN_USER_FAILURE = "LOGIN_USER_FAILURE";
 
 export const setCurrentUser = decodedToken => ({
   type: SET_CURRENT_USER,
-  payload: { decodedToken }
+  payload: decodedToken
 });
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 
+export const setAuthentication = () => ({
+  type: SET_AUTHENTICATION,
+  payload: false
+});
+
+export const SET_AUTHENTICATION = "SET_AUTHENTICATION";
+
 export const logoutUser = () => dispatch => {
   localStorage.removeItem("userData");
   dispatch(setCurrentUser({}));
+  dispatch(setAuthentication());
 };
 
 export const LOGOUT_USER = "LOGOUT_USER";

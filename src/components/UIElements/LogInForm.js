@@ -37,6 +37,7 @@ class LogInForm extends Component {
     const user = this.state;
     if (Object.entries(errors).length === 0) {
       this.props.loginUser(user);
+      console.log(this.props.isAuthenticated);
     }
   };
 

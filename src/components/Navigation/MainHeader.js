@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -25,8 +25,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MainHeader = props => {
-  console.log(props);
   const classes = useStyles();
+
+  const isAuthenticated = props.isAuthenticated;
+  console.log(props);
 
   const logout = e => {
     e.preventDefault();
@@ -46,30 +48,39 @@ const MainHeader = props => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6">MYtinerary</Typography>
-        <Button
-          component={Link}
-          className={classes.title}
-          color="inherit"
-          to="/login"
-        >
-          Login
-        </Button>
-        <Button
-          component={Link}
-          className={classes.title}
-          color="inherit"
-          to="/signup"
-        >
-          Register
-        </Button>
-        <Button onClick={logout}>Logout</Button>
+        {isAuthenticated ? (
+          <Fragment>
+            <Typography>{props.currentUser.email}</Typography>
+            <Button onClick={logout}>Logout</Button>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Button
+              component={Link}
+              className={classes.title}
+              color="inherit"
+              to="/login"
+            >
+              Login
+            </Button>
+            <Button
+              component={Link}
+              className={classes.title}
+              color="inherit"
+              to="/signup"
+            >
+              Register
+            </Button>
+          </Fragment>
+        )}
       </Toolbar>
     </AppBar>
   );
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  currentUser: state.user.currentUser,
+  isAuthenticated: state.user.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({

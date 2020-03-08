@@ -5,7 +5,8 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILURE,
-  SET_CURRENT_USER
+  SET_CURRENT_USER,
+  SET_AUTHENTICATION
 } from "../actions/userActions";
 
 const empty = require("is-empty");
@@ -65,7 +66,13 @@ export function userReducer(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: !empty(action.payload),
-        user: action.payload
+        currentUser: action.payload
+      };
+
+    case SET_AUTHENTICATION:
+      return {
+        ...state,
+        isAuthenticated: action.payload
       };
 
     default:
