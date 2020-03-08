@@ -17,6 +17,13 @@ class SignUpForm extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.user.isAuthenticated) {
+      console.log(this.props);
+      this.props.history.push("/");
+    }
+  }
+
   handleChange = input => e => {
     this.setState({
       [input]: e.target.value
@@ -96,8 +103,13 @@ class SignUpForm extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
+  user: state.user
+});
+
 const mapDispatchToProps = dispatch => ({
   registerUser: user => dispatch(registerUser(user))
 });
 
-export default connect(null, mapDispatchToProps)(SignUpForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);

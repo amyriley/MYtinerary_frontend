@@ -144,3 +144,10 @@ export const setCurrentUser = decodedToken => ({
 });
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+
+export const logoutUser = () => dispatch => {
+  localStorage.removeItem("userData");
+  dispatch(setCurrentUser({}));
+};
+
+export const LOGOUT_USER = "LOGOUT_USER";

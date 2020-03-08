@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import { connect } from "react-redux";
+import { logoutUser } from "../../store/actions/userActions";
+import { withRouter } from "react-router-dom";
 import "./MainHeader.css";
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +25,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MainHeader = props => {
+  console.log(props);
   const classes = useStyles();
+
+  const logout = e => {
+    e.preventDefault();
+    props.logoutUser();
+    props.history.push("/login");
+  };
 
   return (
     <AppBar position="static">
@@ -53,9 +62,20 @@ const MainHeader = props => {
         >
           Register
         </Button>
+        <Button onClick={logout}>Logout</Button>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default MainHeader;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  logoutUser: () => dispatch(logoutUser())
+});
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MainHeader)
+);
